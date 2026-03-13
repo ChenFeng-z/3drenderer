@@ -1,8 +1,8 @@
 build:
-	gcc -Wall -std=c99 ./src/*.c -lSDL2 -o renderer
+	gcc -Wall -std=c99 ./src/*.c -lmingw32 -lSDL2main -lSDL2 -o renderer.exe
 
 run:
-	./renderer
+	renderer.exe
 
 clean:
-	rm renderer
+	del renderer.exe
