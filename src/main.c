@@ -22,8 +22,8 @@ bool initialize_window(void){
     SDL_DisplayMode display_mode;
     SDL_GetCurrentDisplayMode(0, &display_mode);
 
-    //window_width = display_mode.w;
-    //window_height = display_mode.h;
+    window_width = display_mode.w;
+    window_height = display_mode.h;
 
     window = SDL_CreateWindow(
         NULL,
@@ -44,7 +44,7 @@ bool initialize_window(void){
         fprintf(stderr, "Error creating SDL renderer.\n");
         return false;
     }
-    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+    //SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 
     return true;
 }
@@ -104,11 +104,23 @@ void draw_grid(void){
                 color_buffer[(window_width*y) + x] = 0xFF333333;
 }
 
+void draw_rect(int x, int y, int width, int height, uint32_t color){
+    for (int i = 0; i < width; i++){
+        for (int j = 0; j < height; j++){
+            int current_x = x + i;
+            int current_y = y + j;
+            color_buffer[(window_width * current_y) + current_x] = color;
+        }
+    }
+}
+
 void render(void){
     SDL_SetRenderDrawColor(renderer,0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
     draw_grid();
+
+    draw_rect(300, 200, 300, 150, 0xFFF00FF);
 
     render_color_buffer();
     clear_color_buffer(0xFF000000);
