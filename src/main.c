@@ -45,6 +45,7 @@ void render(void) {
 
     draw_grid();
 
+    draw_pixel(20, 20, 0xFFFFFF00);
     draw_rect(300, 200, 300, 150, 0xFFFF00FF);
 
     render_color_buffer();
@@ -53,7 +54,7 @@ void render(void) {
     SDL_RenderPresent(renderer);
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
     is_running = initialize_window();
 
     setup();
