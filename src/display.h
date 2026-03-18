@@ -5,16 +5,31 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define FPS 30
+#define FPS 60
 #define FRAME_TARGET_TIME (1000 / FPS)
 
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 extern uint32_t* color_buffer;
 extern SDL_Texture* color_buffer_texture;
-
 extern int window_width;
 extern int window_height;
+
+enum cull_method {
+    CULL_NONE,
+    CULL_BACKFACE
+};
+
+enum render_method {
+    RENDER_WIRE,
+    RENDER_WIRE_VERTEX,
+    RENDER_FILL_TRIANGLE,
+    RENDER_FILL_TRIANGLE_WIRE
+};
+
+// 2. 用 extern 声明这两个全局变量
+extern enum cull_method cull_method;
+extern enum render_method render_method;
 
 bool initialize_window(void);
 void draw_grid(void);
