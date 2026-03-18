@@ -41,6 +41,12 @@ float vec2_dot(vec2_t a, vec2_t b) {
     return (a.x * b.x) + (a.y * b.y);
 }
 
+void vec2_normalize(vec2_t* v){
+    float length = sqrt(v->x * v->x + v->y * v->y);
+    v->x /= length;
+    v->y /= length;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementations of Vector 3D functions
 ///////////////////////////////////////////////////////////////////////////////
@@ -122,4 +128,11 @@ vec3_t vec3_rotate_z(vec3_t v, float angle) {
         .z = v.z
     };
     return rotated_vector;
+}
+
+void vec3_normalize(vec3_t* v){
+    float length = sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
+    v->x /= length;
+    v->y /= length;
+    v->z /= length;
 }
