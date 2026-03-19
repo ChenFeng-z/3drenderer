@@ -45,8 +45,8 @@ void setup(void) {
     );
 
     // Loads the vertex and face values for the mesh data structure
-    // load_cube_mesh_data();
-    load_obj_file_data("./assets/cube.obj");
+    load_cube_mesh_data();
+    //load_obj_file_data("./assets/cube.obj");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -165,19 +165,24 @@ void update(void) {
             }
         }
 
-        triangle_t projected_triangle;
-
+        vec2_t projected_point[3];
         // Loop all three vertices to perform projection
         for (int j = 0; j < 3; j++) {
             // Project the current vertex
-            vec2_t projected_point = project(transformed_vertices[j]);
+            projected_point[j] = project(transformed_vertices[j]);
 
             // Scale and translate the projected points to the middle of the screen
-            projected_point.x += (window_width / 2);
-            projected_point.y += (window_height / 2);
-
-            projected_triangle.points[j] = projected_point;
+            projected_point[j].x += (window_width / 2);
+            projected_point[j].y += (window_height / 2);
         }
+        triangle_t projected_triangle = {
+                .points = {
+                    {projected_point[0].x, projected_point[0].y},
+                    {projected_point[1].x, projected_point[1].y},
+                    {projected_point[2].x, projected_point[2].y},
+                },
+                .color = mesh_face.color
+            };
 
         // Save the projected triangle in the array of triangles to render
         array_push(triangles_to_render, projected_triangle);
@@ -203,7 +208,7 @@ void render(void) {
                 triangle.points[0].x, triangle.points[0].y, // vertex A
                 triangle.points[1].x, triangle.points[1].y, // vertex B
                 triangle.points[2].x, triangle.points[2].y, // vertex C
-                0xFF555555
+                triangle.color
             );
         }
 
