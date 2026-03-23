@@ -55,8 +55,8 @@ void setup(void) {
     float zfar = 100.0;
     proj_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
     // Loads the vertex and face values for the mesh data structure
-    load_cube_mesh_data();
-    //load_obj_file_data("./assets/cube.obj");
+    //load_cube_mesh_data();
+    load_obj_file_data("./assets/f22.obj");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -186,6 +186,8 @@ void update(void) {
 
             projected_point[j].x *= (window_width / 2.0);
             projected_point[j].y *= (window_height / 2.0);
+
+            projected_point[j].y *= -1;
 
             projected_point[j].x += (window_width / 2.0);
             projected_point[j].y += (window_height / 2.0);
