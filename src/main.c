@@ -185,21 +185,21 @@ void update(void) {
             }
         }
 
-        vec4_t projected_point[3];
+        vec4_t projected_points[3];
         // Loop all three vertices to perform projection
         for (int j = 0; j < 3; j++) {
             // Project the current vertex
-            projected_point[j] = mat4_mul_vec4_project(proj_matrix, transformed_vertices[j]);
+            projected_points[j] = mat4_mul_vec4_project(proj_matrix, transformed_vertices[j]);
 
             // Scale and translate the projected points to the middle of the screen
 
-            projected_point[j].x *= (window_width / 2.0);
-            projected_point[j].y *= (window_height / 2.0);
+            projected_points[j].x *= (window_width / 2.0);
+            projected_points[j].y *= (window_height / 2.0);
 
-            projected_point[j].y *= -1;
+            projected_points[j].y *= -1;
 
-            projected_point[j].x += (window_width / 2.0);
-            projected_point[j].y += (window_height / 2.0);
+            projected_points[j].x += (window_width / 2.0);
+            projected_points[j].y += (window_height / 2.0);
         }
 
         float avg_depth = (transformed_vertices[0].z + transformed_vertices[1].z + transformed_vertices[2].z) / 3.0;
@@ -209,19 +209,19 @@ void update(void) {
         uint32_t triangle_color = light_apply_intensity(mesh_face.color, light_intensity_factor);
 
         triangle_t projected_triangle = {
-                .points = {
-                    {projected_point[0].x, projected_point[0].y},
-                    {projected_point[1].x, projected_point[1].y},
-                    {projected_point[2].x, projected_point[2].y},
-                },
-                .texcoords = {
-                    {mesh_face.a_uv.u, mesh_face.a_uv.v},
-                    {mesh_face.b_uv.u, mesh_face.b_uv.v},
-                    {mesh_face.c_uv.u, mesh_face.c_uv.v}
-                },
-                .color = triangle_color,
-                .avg_depth = avg_depth
-            };
+            .points = {
+                { projected_points[0].x, projected_points[0].y, projected_points[0].z, projected_points[0].w },
+                { projected_points[1].x, projected_points[1].y, projected_points[1].z, projected_points[1].w },
+                { projected_points[2].x, projected_points[2].y, projected_points[2].z, projected_points[2].w },
+            },
+            .texcoords = {
+                { mesh_face.a_uv.u, mesh_face.a_uv.v },
+                { mesh_face.b_uv.u, mesh_face.b_uv.v },
+                { mesh_face.c_uv.u, mesh_face.c_uv.v }
+            },
+            .color = triangle_color,
+            .avg_depth = avg_depth
+        };
 
         // Save the projected triangle in the array of triangles to render
         array_push(triangles_to_render, projected_triangle);
@@ -266,9 +266,9 @@ void render(void) {
         // Draw textured triangle
         if (render_method == RENDER_TEXTURED || render_method == RENDER_TEXTURED_WIRE) {
             draw_textured_triangle(
-                triangle.points[0].x, triangle.points[0].y, triangle.texcoords[0].u, triangle.texcoords[0].v, // vertex A
-                triangle.points[1].x, triangle.points[1].y, triangle.texcoords[1].u, triangle.texcoords[1].v, // vertex B
-                triangle.points[2].x, triangle.points[2].y, triangle.texcoords[2].u, triangle.texcoords[2].v, // vertex C
+                triangle.points[0].x, triangle.points[0].y, triangle.points[0].z, triangle.points[0].w, triangle.texcoords[0].u, triangle.texcoords[0].v, // vertex A
+                triangle.points[1].x, triangle.points[1].y, triangle.points[1].z, triangle.points[1].w, triangle.texcoords[1].u, triangle.texcoords[1].v, // vertex B
+                triangle.points[2].x, triangle.points[2].y, triangle.points[2].z, triangle.points[2].w, triangle.texcoords[2].u, triangle.texcoords[2].v, // vertex C
                 mesh_texture
             );
         }
