@@ -56,12 +56,13 @@ void setup(void) {
     float zfar = 100.0;
     proj_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
-    mesh_texture = (int32_t*)REDBRICK_TEXTURE;
-    texture_height = 64;
-    texture_width = 64;
+    //mesh_texture = (int32_t*)REDBRICK_TEXTURE;
+    //texture_height = 64;
+    //texture_width = 64;
     // Loads the vertex and face values for the mesh data structure
     load_cube_mesh_data();
     //load_obj_file_data("./assets/f22.obj");
+    load_png_texture_data("./assets/cube.png");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
